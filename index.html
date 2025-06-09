@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Production Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f9; color: #333; margin: 20px; }
+        h2 { background-color: #003366; color: white; padding: 10px; border-radius: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { padding: 8px 12px; border: 1px solid #ccc; text-align: left; }
+        th { background-color: #e6e6e6; }
+        .section { margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+    <h2>Production Report Summary</h2>
+    <div class="section">
+        <h3>Opening Stock of Raw Material</h3>
+        <table>
+            <tr><th>Material</th><th>Quantity</th></tr>
+            <tr><td>Slurry</td><td>126.6 MT</td></tr>
+            <tr><td>RH</td><td>41 MT</td></tr>
+            <tr><td>OPC</td><td>25.9 MT</td></tr>
+            <tr><td>Silo Stock</td><td>3.5 MT</td></tr>
+            <tr><td>Microsilica Bags</td><td>2867 Nos</td></tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h3>Microsilica Dryer Production (AMS)</h3>
+        <table>
+            <tr><th>Session</th><th>Start Time</th><th>End Time</th><th>Production (MT)</th><th>Duration (hrs)</th><th>TPH</th><th>JCB Running</th></tr>
+            <tr><td>1st</td><td>9:40 AM</td><td>12:20 PM</td><td>12</td><td>2.5</td><td>5.5</td><td>2 hrs</td></tr>
+            <tr><td>2nd</td><td>4:10 PM</td><td>6:00 PM</td><td>10.6</td><td>1.9</td><td>5.5</td><td>2 hrs</td></tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h3>VRM Microsilica Production (AMS)</h3>
+        <table>
+            <tr><th>Session</th><th>Type</th><th>Start Time</th><th>End Time</th><th>Production (MT)</th><th>Bags</th><th>Duration (hrs)</th><th>TPH</th></tr>
+            <tr><td>1st</td><td>45µ</td><td>10:45 AM</td><td>11:40 AM</td><td>15.5</td><td>620</td><td>1.75</td><td>8.85</td></tr>
+            <tr><td>2nd</td><td>75µ</td><td>6:15 PM</td><td>7:00 PM</td><td>10.6</td><td>425</td><td>0.75</td><td>14.13</td></tr>
+        </table>
+        <p><strong>Total VRM Production:</strong> 26.2 MT in 2.5 hrs (TPH 10.48)</p>
+    </div>
+
+    <div class="section">
+        <h3>Electricity Consumption</h3>
+        <table>
+            <tr><th>Meter</th><th>Start Reading</th><th>End Reading</th><th>Units Consumed</th></tr>
+            <tr><td>EB</td><td>67039</td><td>67255</td><td>864</td></tr>
+            <tr><td>New Smart Meter</td><td>67039</td><td>137</td><td>548</td></tr>
+        </table>
+        <p><strong>Total Consumption:</strong> 1412 Units</p>
+    </div>
+
+    <div class="section">
+        <h3>Production, Dispatch & Stock</h3>
+        <table>
+            <tr><th>Item</th><th>Quantity</th></tr>
+            <tr><td>Microsilica Dispatch to Talegaon</td><td>44.89 MT</td></tr>
+            <tr><td>Total AMS Production</td><td>535 MT</td></tr>
+            <tr><td>Total AMS Dispatched</td><td>517 MT</td></tr>
+            <tr><td>Godown Stock for AMS</td><td>18 MT</td></tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h3>Closing Stock of Raw Material</h3>
+        <table>
+            <tr><th>Material</th><th>Quantity</th></tr>
+            <tr><td>Slurry</td><td>112.6 MT</td></tr>
+            <tr><td>RH</td><td>59 MT</td></tr>
+            <tr><td>OPC</td><td>24.8 MT</td></tr>
+            <tr><td>Silo Stock</td><td>0 MT</td></tr>
+            <tr><td>Microsilica Bags</td><td>1819 Nos</td></tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h3>Power Failure & Break Down</h3>
+        <ul>
+            <li>10:00 AM - RH Vehicle Unloading Started</li>
+            <li>2:30 PM to 4:00 PM - Power Cut for New Meter Installation</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h3>Night Shift Production Plan</h3>
+        <ul>
+            <li>63 MT VRM Microsilica (AMS) Production</li>
+            <li>55 MT Dryer Microsilica (AMS) Drying Process</li>
+            <li><strong>Shift Incharge:</strong> Satya Ranjan</li>
+            <li><strong>Operators:</strong> Jagansoi & Shesananda</li>
+        </ul>
+    </div>
+</body>
+</html>
