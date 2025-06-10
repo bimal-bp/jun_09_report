@@ -8,164 +8,164 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 10px;
+            margin: 20px;
             line-height: 1.5;
             font-size: 14px;
+            color: #333;
         }
         .header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3498db;
         }
         .shift-report {
             border: 1px solid #ddd;
-            padding: 10px;
-            margin-bottom: 20px;
+            padding: 15px;
+            margin-bottom: 30px;
             border-radius: 5px;
             background-color: #f9f9f9;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         .shift-title {
             background-color: #333;
             color: white;
-            padding: 8px;
-            margin: -10px -10px 15px -10px;
+            padding: 12px;
+            margin: -15px -15px 20px -15px;
             border-radius: 5px 5px 0 0;
-            font-size: 16px;
+            font-size: 18px;
+            text-align: center;
         }
         .section {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         .section-title {
             font-weight: bold;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 3px;
-            margin-bottom: 8px;
-            font-size: 15px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-bottom: 12px;
+            font-size: 16px;
+            color: #2c3e50;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 10px;
-            font-size: 13px;
+            margin-bottom: 15px;
+            font-size: 14px;
         }
         table, th, td {
             border: 1px solid #ddd;
         }
         th, td {
-            padding: 6px;
+            padding: 8px;
             text-align: left;
         }
         th {
             background-color: #f2f2f2;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
         }
         .notes {
             font-style: italic;
             color: #666;
             font-size: 13px;
+            padding: 5px;
         }
         .chart-container {
             display: flex;
             flex-direction: column;
-            margin: 20px 0;
+            margin: 25px 0;
         }
         .chart-row {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            gap: 20px;
         }
         .chart-box {
-            width: 100%;
-            margin-bottom: 15px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.1);
-            padding: 10px;
+            flex: 1 1 45%;
+            min-width: 300px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 15px;
             border-radius: 5px;
             background: white;
-        }
-        @media (min-width: 600px) {
-            .chart-box {
-                width: 48%;
-            }
         }
         .chart-title {
             text-align: center;
             font-weight: bold;
-            margin-bottom: 8px;
-            font-size: 14px;
+            margin-bottom: 10px;
+            font-size: 15px;
+            color: #2c3e50;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
         }
         .comparison-section {
             background-color: #eef7ff;
-            padding: 15px;
+            padding: 20px;
             border-radius: 5px;
-            margin: 20px 0;
+            margin: 30px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         canvas {
-            max-height: 250px;
+            max-height: 300px;
+            width: 100% !important;
         }
         h1 {
-            font-size: 20px;
+            font-size: 24px;
             margin-bottom: 5px;
+            color: #2c3e50;
         }
         h2 {
-            font-size: 18px;
+            font-size: 20px;
+            color: #3498db;
+            margin-top: 0;
         }
         h3 {
             font-size: 16px;
-            margin: 10px 0 5px 0;
+            margin: 15px 0 10px 0;
+            color: #2c3e50;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        .night-shift {
+            background-color: #2c3e50;
+        }
+        .day-shift {
+            background-color: #3498db;
+        }
+        @media (max-width: 768px) {
+            .chart-box {
+                flex: 1 1 100%;
+            }
+            body {
+                margin: 10px;
+                font-size: 13px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>Microsilica (AMS) Production Report</h1>
-        <h2 id="09 june 2025 "></h2>
-    </div>
-
-    <!-- Comparison Graphs Section -->
-    <div class="comparison-section">
-        <h2>Shift Comparison Analysis</h2>
-        
-        <div class="chart-container">
-            <div class="chart-row">
-                <div class="chart-box">
-                    <div class="chart-title">Production Quantity (MT) - Bar</div>
-                    <canvas id="productionChart"></canvas>
-                </div>
-                <div class="chart-box">
-                    <div class="chart-title">Production Distribution - Pie</div>
-                    <canvas id="productionPieChart"></canvas>
-                </div>
-            </div>
-            
-            <div class="chart-row">
-                <div class="chart-box">
-                    <div class="chart-title">Active Working Hours</div>
-                    <canvas id="workingHoursChart"></canvas>
-                </div>
-            </div>
-            
-            <div class="chart-row">
-                <div class="chart-box">
-                    <div class="chart-title">Equipment Running Time</div>
-                    <canvas id="equipmentChart"></canvas>
-                </div>
-            </div>
-            
-            <div class="chart-row">
-                <div class="chart-box">
-                    <div class="chart-title">Electricity Consumption</div>
-                    <canvas id="electricityChart"></canvas>
-                </div>
-                <div class="chart-box">
-                    <div class="chart-title">Electricity Distribution - Pie</div>
-                    <canvas id="electricityPieChart"></canvas>
-                </div>
-            </div>
-        </div>
+        <h2 id="current-date"></h2>
     </div>
 
     <!-- Night Shift Report -->
     <div class="shift-report">
-        <div class="shift-title" style="background-color: #2c3e50;">
+        <div class="shift-title night-shift">
             <h2>Night Shift Production Report (9:00 PM - 6:00 AM)</h2>
         </div>
         
@@ -243,7 +243,7 @@
 
     <!-- Day Shift Report -->
     <div class="shift-report">
-        <div class="shift-title" style="background-color: #3498db;">
+        <div class="shift-title day-shift">
             <h2>Day Shift Production Report (9:00 AM - 6:00 PM)</h2>
         </div>
         
@@ -337,6 +337,49 @@
         </div>
     </div>
 
+    <!-- Comparison Graphs Section -->
+    <div class="comparison-section">
+        <h2>Shift Comparison Analysis</h2>
+        
+        <div class="chart-container">
+            <div class="chart-row">
+                <div class="chart-box">
+                    <div class="chart-title">Production Quantity (MT) - Bar</div>
+                    <canvas id="productionChart"></canvas>
+                </div>
+                <div class="chart-box">
+                    <div class="chart-title">Production Distribution - Pie</div>
+                    <canvas id="productionPieChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-row">
+                <div class="chart-box">
+                    <div class="chart-title">Active Working Hours</div>
+                    <canvas id="workingHoursChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-row">
+                <div class="chart-box">
+                    <div class="chart-title">Equipment Running Time</div>
+                    <canvas id="equipmentChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-row">
+                <div class="chart-box">
+                    <div class="chart-title">Electricity Consumption</div>
+                    <canvas id="electricityChart"></canvas>
+                </div>
+                <div class="chart-box">
+                    <div class="chart-title">Electricity Distribution - Pie</div>
+                    <canvas id="electricityPieChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Display current date
         const now = new Date();
@@ -355,7 +398,7 @@
                 labels: shiftLabels,
                 datasets: [{
                     label: 'Dryer Production (MT)',
-                    data: [26, 26],
+                    data: [21, 26],
                     backgroundColor: colors[0],
                     borderColor: colors[0],
                     borderWidth: 1
@@ -378,6 +421,11 @@
                             text: 'Metric Tons (MT)'
                         }
                     }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
                 }
             }
         });
@@ -388,7 +436,7 @@
             data: {
                 labels: ['Day Dryer', 'Day VRM', 'Night Dryer', 'Night VRM'],
                 datasets: [{
-                    data: [26, 17.1, 26, 30.2],
+                    data: [21, 17.1, 26, 30.2],
                     backgroundColor: pieColors,
                     borderWidth: 1
                 }]
@@ -399,6 +447,17 @@
                 plugins: {
                     legend: {
                         position: 'bottom'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.raw || 0;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = Math.round((value / total) * 100);
+                                return `${label}: ${value} MT (${percentage}%)`;
+                            }
+                        }
                     }
                 }
             }
@@ -434,27 +493,10 @@
                             text: 'Hours'
                         }
                     }
-                }
-            }
-        });
-
-        // Hours Pie Chart
-        new Chart(document.getElementById('hoursPieChart'), {
-            type: 'pie',
-            data: {
-                labels: ['Day Active', 'Day Idle', 'Night Active', 'Night Idle'],
-                datasets: [{
-                    data: [5, 4, 5, 4],
-                    backgroundColor: pieColors,
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
+                },
                 plugins: {
                     legend: {
-                        position: 'bottom'
+                        position: 'top',
                     }
                 }
             }
@@ -496,27 +538,10 @@
                             text: 'Hours'
                         }
                     }
-                }
-            }
-        });
-
-        // Equipment Pie Chart
-        new Chart(document.getElementById('equipmentPieChart'), {
-            type: 'pie',
-            data: {
-                labels: ['Day Dryer', 'Day VRM', 'Day JCB', 'Night Dryer', 'Night VRM', 'Night JCB'],
-                datasets: [{
-                    data: [4, 1, 5, 3.1, 1.9, 4],
-                    backgroundColor: pieColors,
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
+                },
                 plugins: {
                     legend: {
-                        position: 'bottom'
+                        position: 'top',
                     }
                 }
             }
@@ -567,6 +592,17 @@
                 plugins: {
                     legend: {
                         position: 'bottom'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.raw || 0;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = Math.round((value / total) * 100);
+                                return `${label}: ${value} units (${percentage}%)`;
+                            }
+                        }
                     }
                 }
             }
