@@ -163,81 +163,46 @@
         <h2 id="current-date"></h2>
     </div>
 
-    <!-- Night Shift Report -->
-    <div class="shift-report">
-        <div class="shift-title night-shift">
-            <h2>Night Shift Production Report (9:00 PM - 6:00 AM)</h2>
-        </div>
+    <!-- Comparison Graphs Section -->
+    <div class="comparison-section">
+        <h2>Shift Comparison Analysis</h2>
         
-        <div class="section">
-            <div class="section-title">Opening Stock of Raw Material</div>
-            <table>
-                <tr><th>Material</th><th>Quantity</th></tr>
-                <tr><td>SLURRY</td><td>122 MT</td></tr>
-                <tr><td>RH</td><td>65.7 MT</td></tr>
-                <tr><td>OPC</td><td>7.8 MT</td></tr>
-                <tr><td>Silo stock</td><td>4 MT</td></tr>
-                <tr><td>Microsilica bags</td><td>91,507 nos</td></tr>
-            </table>
-        </div>
-        
-        <div class="section">
-            <div class="section-title">Production Details</div>
-            <p><strong>Total Shift Hours:</strong> 9 hours</p>
+        <div class="chart-container">
+            <div class="chart-row">
+                <div class="chart-box">
+                    <div class="chart-title">Production Quantity (MT) - Bar</div>
+                    <canvas id="productionChart"></canvas>
+                </div>
+                <div class="chart-box">
+                    <div class="chart-title">Production Distribution - Pie</div>
+                    <canvas id="productionPieChart"></canvas>
+                </div>
+            </div>
             
-            <h3>Dryer Microsilica (AMS)</h3>
-            <table>
-                <tr><th>Start Time</th><th>End Time</th><th>Duration</th><th>Production</th><th>TPH</th><th>LDO Consumption</th></tr>
-                <tr><td>11:50 PM</td><td>03:00 AM</td><td>3.1 hours</td><td>26 MT</td><td>8.3</td><td>90 liters</td></tr>
-            </table>
-            <p><strong>JCB Running:</strong> 4 hours</p>
+            <div class="chart-row">
+                <div class="chart-box">
+                    <div class="chart-title">Active Working Hours</div>
+                    <canvas id="workingHoursChart"></canvas>
+                </div>
+            </div>
             
-            <h3>VRM Microsilica (AMS) 75µ</h3>
-            <table>
-                <tr><th>Start Time</th><th>End Time</th><th>Duration</th><th>Production</th><th>Bags</th><th>TPH</th><th>Manpower</th></tr>
-                <tr><td>11:00 PM</td><td>05:30 AM</td><td>1.9 hours (active)</td><td>30.2 MT</td><td>1,208 bags</td><td>15.89</td><td>5</td></tr>
-            </table>
-        </div>
-        
-        <div class="section">
-            <div class="section-title">Electricity Consumption</div>
-            <table>
-                <tr><th>Start Reading</th><th>End Reading</th><th>Units Consumed</th></tr>
-                <tr><td>2088</td><td>2404</td><td>1264</td></tr>
-            </table>
-        </div>
-        
-        <div class="section">
-            <div class="section-title">Production, Despatch & Stock Data</div>
-            <table>
-                <tr><th>Description</th><th>Quantity</th></tr>
-                <tr><td>Production for AMS</td><td>742.2 MT</td></tr>
-                <tr><td>Despatched for AMS</td><td>704 MT</td></tr>
-                <tr><td>Godown stock for AMS</td><td>38.2 MT</td></tr>
-            </table>
-        </div>
-        
-        <div class="section">
-            <div class="section-title">Closing Stock of Raw Material</div>
-            <table>
-                <tr><th>Material</th><th>Quantity</th></tr>
-                <tr><td>SLURRY</td><td>110 MT</td></tr>
-                <tr><td>RH</td><td>53.7 MT</td></tr>
-                <tr><td>OPC</td><td>5.15 MT</td></tr>
-                <tr><td>Silo stock</td><td>0 MT</td></tr>
-                <tr><td>Microsilica bags</td><td>90,299 nos</td></tr>
-            </table>
-        </div>
-        
-        <div class="section">
-            <div class="section-title">Power Failure & Break Down</div>
-            <p class="notes">No issues reported</p>
-        </div>
-        
-        <div class="section">
-            <div class="section-title">Shift Personnel</div>
-            <p><strong>Shift Incharge:</strong> Jagdeesh Pola</p>
-            <p><strong>Operator:</strong> Jagansoi</p>
+            <div class="chart-row">
+                <div class="chart-box">
+                    <div class="chart-title">Equipment Running Time</div>
+                    <canvas id="equipmentChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-row">
+                <div class="chart-box">
+                    <div class="chart-title">Electricity Consumption</div>
+                    <canvas id="electricityChart"></canvas>
+                </div>
+                <div class="chart-box">
+                    <div class="chart-title">Electricity Distribution - Pie</div>
+                    <canvas id="electricityPieChart"></canvas>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -337,54 +302,90 @@
         </div>
     </div>
 
-    <!-- Comparison Graphs Section -->
-    <div class="comparison-section">
-        <h2>Shift Comparison Analysis</h2>
+    <!-- Night Shift Report -->
+    <div class="shift-report">
+        <div class="shift-title night-shift">
+            <h2>Night Shift Production Report (9:00 PM - 6:00 AM)</h2>
+        </div>
         
-        <div class="chart-container">
-            <div class="chart-row">
-                <div class="chart-box">
-                    <div class="chart-title">Production Quantity (MT) - Bar</div>
-                    <canvas id="productionChart"></canvas>
-                </div>
-                <div class="chart-box">
-                    <div class="chart-title">Production Distribution - Pie</div>
-                    <canvas id="productionPieChart"></canvas>
-                </div>
-            </div>
+        <div class="section">
+            <div class="section-title">Opening Stock of Raw Material</div>
+            <table>
+                <tr><th>Material</th><th>Quantity</th></tr>
+                <tr><td>SLURRY</td><td>122 MT</td></tr>
+                <tr><td>RH</td><td>65.7 MT</td></tr>
+                <tr><td>OPC</td><td>7.8 MT</td></tr>
+                <tr><td>Silo stock</td><td>4 MT</td></tr>
+                <tr><td>Microsilica bags</td><td>91,507 nos</td></tr>
+            </table>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Production Details</div>
+            <p><strong>Total Shift Hours:</strong> 9 hours</p>
             
-            <div class="chart-row">
-                <div class="chart-box">
-                    <div class="chart-title">Active Working Hours</div>
-                    <canvas id="workingHoursChart"></canvas>
-                </div>
-            </div>
+            <h3>Dryer Microsilica (AMS)</h3>
+            <table>
+                <tr><th>Start Time</th><th>End Time</th><th>Duration</th><th>Production</th><th>TPH</th><th>LDO Consumption</th></tr>
+                <tr><td>11:50 PM</td><td>03:00 AM</td><td>3.1 hours</td><td>26 MT</td><td>8.3</td><td>90 liters</td></tr>
+            </table>
+            <p><strong>JCB Running:</strong> 4 hours</p>
             
-            <div class="chart-row">
-                <div class="chart-box">
-                    <div class="chart-title">Equipment Running Time</div>
-                    <canvas id="equipmentChart"></canvas>
-                </div>
-            </div>
-            
-            <div class="chart-row">
-                <div class="chart-box">
-                    <div class="chart-title">Electricity Consumption</div>
-                    <canvas id="electricityChart"></canvas>
-                </div>
-                <div class="chart-box">
-                    <div class="chart-title">Electricity Distribution - Pie</div>
-                    <canvas id="electricityPieChart"></canvas>
-                </div>
-            </div>
+            <h3>VRM Microsilica (AMS) 75µ</h3>
+            <table>
+                <tr><th>Start Time</th><th>End Time</th><th>Duration</th><th>Production</th><th>Bags</th><th>TPH</th><th>Manpower</th></tr>
+                <tr><td>11:00 PM</td><td>05:30 AM</td><td>1.9 hours (active)</td><td>30.2 MT</td><td>1,208 bags</td><td>15.89</td><td>5</td></tr>
+            </table>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Electricity Consumption</div>
+            <table>
+                <tr><th>Start Reading</th><th>End Reading</th><th>Units Consumed</th></tr>
+                <tr><td>2088</td><td>2404</td><td>1264</td></tr>
+            </table>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Production, Despatch & Stock Data</div>
+            <table>
+                <tr><th>Description</th><th>Quantity</th></tr>
+                <tr><td>Production for AMS</td><td>742.2 MT</td></tr>
+                <tr><td>Despatched for AMS</td><td>704 MT</td></tr>
+                <tr><td>Godown stock for AMS</td><td>38.2 MT</td></tr>
+            </table>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Closing Stock of Raw Material</div>
+            <table>
+                <tr><th>Material</th><th>Quantity</th></tr>
+                <tr><td>SLURRY</td><td>110 MT</td></tr>
+                <tr><td>RH</td><td>53.7 MT</td></tr>
+                <tr><td>OPC</td><td>5.15 MT</td></tr>
+                <tr><td>Silo stock</td><td>0 MT</td></tr>
+                <tr><td>Microsilica bags</td><td>90,299 nos</td></tr>
+            </table>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Power Failure & Break Down</div>
+            <p class="notes">No issues reported</p>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Shift Personnel</div>
+            <p><strong>Shift Incharge:</strong> Jagdeesh Pola</p>
+            <p><strong>Operator:</strong> Jagansoi</p>
         </div>
     </div>
 
     <script>
-        // Display current date
-        const now = new Date();
+        // Display fixed date: 09 June 2025
+        const fixedDate = new Date('2025-06-09');
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', options);
+        document.getElementById('current-date').textContent = fixedDate.toLocaleDateString('en-US', options);
+
 
         // Chart data
         const shiftLabels = ['Day Shift', 'Night Shift'];
