@@ -3,98 +3,485 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Production Dashboard</title>
+    <title>Production Report with Comparative Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f4f9; color: #333; margin: 20px; }
-        h2 { background-color: #003366; color: white; padding: 10px; border-radius: 5px; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        th, td { padding: 8px 12px; border: 1px solid #ccc; text-align: left; }
-        th { background-color: #e6e6e6; }
-        .section { margin-bottom: 30px; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .shift-report {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .shift-title {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            margin: -20px -20px 20px -20px;
+            border-radius: 5px 5px 0 0;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-weight: bold;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .notes {
+            font-style: italic;
+            color: #666;
+        }
+        .chart-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 30px 0;
+        }
+        .chart-box {
+            width: 48%;
+            min-width: 300px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 15px;
+            border-radius: 5px;
+            background: white;
+        }
+        .chart-title {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .comparison-section {
+            background-color: #eef7ff;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 30px 0;
+        }
     </style>
 </head>
 <body>
-    <h2>Production Report Summary</h2>
-    <div class="section">
-        <h3>Opening Stock of Raw Material</h3>
-        <table>
-            <tr><th>Material</th><th>Quantity</th></tr>
-            <tr><td>Slurry</td><td>126.6 MT</td></tr>
-            <tr><td>RH</td><td>41 MT</td></tr>
-            <tr><td>OPC</td><td>25.9 MT</td></tr>
-            <tr><td>Silo Stock</td><td>3.5 MT</td></tr>
-            <tr><td>Microsilica Bags</td><td>2867 Nos</td></tr>
-        </table>
+    <div class="header">
+        <h1>Microsilica (AMS) Production Report</h1>
+        <h2 id="current-date"></h2>
     </div>
 
-    <div class="section">
-        <h3>Microsilica Dryer Production (AMS)</h3>
-        <table>
-            <tr><th>Session</th><th>Start Time</th><th>End Time</th><th>Production (MT)</th><th>Duration (hrs)</th><th>TPH</th><th>JCB Running</th></tr>
-            <tr><td>1st</td><td>9:40 AM</td><td>12:20 PM</td><td>12</td><td>2.5</td><td>5.5</td><td>2 hrs</td></tr>
-            <tr><td>2nd</td><td>4:10 PM</td><td>6:00 PM</td><td>10.6</td><td>1.9</td><td>5.5</td><td>2 hrs</td></tr>
-        </table>
+    <!-- Comparison Graphs Section -->
+    <div class="comparison-section">
+        <h2>Shift Comparison Analysis</h2>
+        
+        <div class="chart-container">
+            <div class="chart-box">
+                <div class="chart-title">Production Quantity (MT)</div>
+                <canvas id="productionChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <div class="chart-title">Active Working Hours</div>
+                <canvas id="workingHoursChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <div class="chart-title">Dryer Running Time (hours)</div>
+                <canvas id="dryerChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <div class="chart-title">VRM Running Time (hours)</div>
+                <canvas id="vrmChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <div class="chart-title">Electricity Consumption (Units)</div>
+                <canvas id="electricityChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <div class="chart-title">JCB Running Time (hours)</div>
+                <canvas id="jcbChart"></canvas>
+            </div>
+        </div>
     </div>
 
-    <div class="section">
-        <h3>VRM Microsilica Production (AMS)</h3>
-        <table>
-            <tr><th>Session</th><th>Type</th><th>Start Time</th><th>End Time</th><th>Production (MT)</th><th>Bags</th><th>Duration (hrs)</th><th>TPH</th></tr>
-            <tr><td>1st</td><td>45µ</td><td>10:45 AM</td><td>11:40 AM</td><td>15.5</td><td>620</td><td>1.75</td><td>8.85</td></tr>
-            <tr><td>2nd</td><td>75µ</td><td>6:15 PM</td><td>7:00 PM</td><td>10.6</td><td>425</td><td>0.75</td><td>14.13</td></tr>
-        </table>
-        <p><strong>Total VRM Production:</strong> 26.2 MT in 2.5 hrs (TPH 10.48)</p>
+    <!-- Night Shift Report -->
+    <div class="shift-report">
+        <div class="shift-title" style="background-color: #2c3e50;">
+            <h2>Night Shift Production Report (9:00 PM - 6:00 AM)</h2>
+        </div>
+        
+        <!-- Rest of the night shift content remains the same -->
+        <div class="section">
+            <div class="section-title">Opening Stock of Raw Material</div>
+            <table>
+                <tr><th>Material</th><th>Quantity</th></tr>
+                <tr><td>SLURRY</td><td>122 MT</td></tr>
+                <tr><td>RH</td><td>65.7 MT</td></tr>
+                <tr><td>OPC</td><td>7.8 MT</td></tr>
+                <tr><td>Silo stock</td><td>4 MT</td></tr>
+                <tr><td>Microsilica bags</td><td>91,507 nos</td></tr>
+            </table>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Production Details</div>
+            <p><strong>Total Shift Hours:</strong> 9 hours</p>
+            
+            <h3>Dryer Microsilica (AMS)</h3>
+            <table>
+                <tr><th>Start Time</th><th>End Time</th><th>Duration</th><th>Production</th><th>TPH</th><th>LDO Consumption</th></tr>
+                <tr><td>11:50 PM</td><td>03:00 AM</td><td>3.1 hours</td><td>26 MT</td><td>8.3</td><td>90 liters</td></tr>
+            </table>
+            <p><strong>JCB Running:</strong> 4 hours</p>
+            
+            <h3>VRM Microsilica (AMS) 75µ</h3>
+            <table>
+                <tr><th>Start Time</th><th>End Time</th><th>Duration</th><th>Production</th><th>Bags</th><th>TPH</th><th>Manpower</th></tr>
+                <tr><td>11:00 PM</td><td>05:30 AM</td><td>1.9 hours (active)</td><td>30.2 MT</td><td>1,208 bags</td><td>15.89</td><td>5</td></tr>
+            </table>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Electricity Consumption</div>
+            <table>
+                <tr><th>Start Reading</th><th>End Reading</th><th>Units Consumed</th></tr>
+                <tr><td>2088</td><td>2404</td><td>1264</td></tr>
+            </table>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Production, Despatch & Stock Data</div>
+            <table>
+                <tr><th>Description</th><th>Quantity</th></tr>
+                <tr><td>Production for AMS</td><td>742.2 MT</td></tr>
+                <tr><td>Despatched for AMS</td><td>704 MT</td></tr>
+                <tr><td>Godown stock for AMS</td><td>38.2 MT</td></tr>
+            </table>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Closing Stock of Raw Material</div>
+            <table>
+                <tr><th>Material</th><th>Quantity</th></tr>
+                <tr><td>SLURRY</td><td>110 MT</td></tr>
+                <tr><td>RH</td><td>53.7 MT</td></tr>
+                <tr><td>OPC</td><td>5.15 MT</td></tr>
+                <tr><td>Silo stock</td><td>0 MT</td></tr>
+                <tr><td>Microsilica bags</td><td>90,299 nos</td></tr>
+            </table>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Power Failure & Break Down</div>
+            <p class="notes">No issues reported</p>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Shift Personnel</div>
+            <p><strong>Shift Incharge:</strong> Jagdeesh Pola</p>
+            <p><strong>Operator:</strong> Jagansoi</p>
+        </div>
     </div>
 
-    <div class="section">
-        <h3>Electricity Consumption</h3>
-        <table>
-            <tr><th>Meter</th><th>Start Reading</th><th>End Reading</th><th>Units Consumed</th></tr>
-            <tr><td>EB</td><td>67039</td><td>67255</td><td>864</td></tr>
-            <tr><td>New Smart Meter</td><td>67039</td><td>137</td><td>548</td></tr>
-        </table>
-        <p><strong>Total Consumption:</strong> 1412 Units</p>
+    <!-- Day Shift Report -->
+    <div class="shift-report">
+        <div class="shift-title" style="background-color: #3498db;">
+            <h2>Day Shift Production Report (9:00 AM - 6:00 PM)</h2>
+        </div>
+        
+        <!-- Rest of the day shift content remains the same -->
+        <div class="section">
+            <div class="section-title">Opening Stock of Raw Material</div>
+            <table>
+                <tr><th>Material</th><th>Quantity</th></tr>
+                <tr><td>SLURRY</td><td>122 MT</td></tr>
+                <tr><td>RH</td><td>35.7 MT</td></tr>
+                <tr><td>OPC</td><td>5.3 MT</td></tr>
+                <tr><td>Silo stock</td><td>0 MT</td></tr>
+                <tr><td>Microsilica bags</td><td>92,191 nos</td></tr>
+            </table>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Production Details</div>
+            <p><strong>Total Shift Hours:</strong> 9 hours</p>
+            
+            <h3>Dryer Microsilica (AMS)</h3>
+            <table>
+                <tr><th>Start Time</th><th>End Time</th><th>Duration</th><th>Production</th><th>TPH</th></tr>
+                <tr><td>02:00 PM</td><td>06:00 PM</td><td>4 hours</td><td>21 MT</td><td>5.25</td></tr>
+            </table>
+            <p><strong>JCB Running:</strong> 5 hours</p>
+            
+            <h3>VRM Microsilica (AMS) 75µ</h3>
+            <table>
+                <tr><th>Start Time</th><th>End Time</th><th>Duration</th><th>Production</th><th>Bags</th><th>TPH</th><th>Manpower</th></tr>
+                <tr><td>04:00 PM</td><td>05:00 PM</td><td>1 hour</td><td>17.1 MT</td><td>684 bags</td><td>17.1</td><td>8</td></tr>
+            </table>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Electricity Consumption</div>
+            <table>
+                <tr><th>Start Reading</th><th>End Reading</th><th>Units Consumed</th></tr>
+                <tr><td>1896</td><td>2088</td><td>768</td></tr>
+            </table>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Despatch Details</div>
+            <table>
+                <tr><th>Description</th><th>Quantity</th></tr>
+                <tr><td>Microsilica (AMS) dispatch to Talegaon</td><td>60.14 MT</td></tr>
+                <tr><td>Microsilica 10micron (40 jumbo bags) dispatch to Taloja</td><td>30 MT</td></tr>
+            </table>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Production, Despatch & Stock Data</div>
+            <table>
+                <tr><th>Description</th><th>Quantity</th></tr>
+                <tr><td>Production for AMS</td><td>712 MT</td></tr>
+                <tr><td>Despatched for AMS</td><td>704 MT</td></tr>
+                <tr><td>Godown stock for AMS</td><td>7.9 MT</td></tr>
+            </table>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Closing Stock of Raw Material</div>
+            <table>
+                <tr><th>Material</th><th>Quantity</th></tr>
+                <tr><td>SLURRY</td><td>122 MT</td></tr>
+                <tr><td>RH</td><td>65.7 MT</td></tr>
+                <tr><td>OPC</td><td>7.8 MT</td></tr>
+                <tr><td>Silo stock</td><td>9 MT</td></tr>
+                <tr><td>Microsilica bags</td><td>91,507 nos</td></tr>
+            </table>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Power Failure & Break Down</div>
+            <p>9:00 AM to 1:33 PM - Plant breakdown due to dryer belt conveyor motor burn. After new motor installation, dryer running OK.</p>
+            <p>2:00 PM - RH vehicle unloading started.</p>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Night Shift Production Plan</div>
+            <ul>
+                <li>VRM microsilica (AMS) Production</li>
+                <li>Dryer microsilica (AMS) Drying Process</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Shift Personnel</div>
+            <p><strong>Shift Incharge:</strong> Jagdeesh Pola</p>
+            <p><strong>Operator:</strong> Jagansoi</p>
+        </div>
     </div>
 
-    <div class="section">
-        <h3>Production, Dispatch & Stock</h3>
-        <table>
-            <tr><th>Item</th><th>Quantity</th></tr>
-            <tr><td>Microsilica Dispatch to Talegaon</td><td>44.89 MT</td></tr>
-            <tr><td>Total AMS Production</td><td>535 MT</td></tr>
-            <tr><td>Total AMS Dispatched</td><td>517 MT</td></tr>
-            <tr><td>Godown Stock for AMS</td><td>18 MT</td></tr>
-        </table>
-    </div>
+    <script>
+        // Display current date
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', options);
 
-    <div class="section">
-        <h3>Closing Stock of Raw Material</h3>
-        <table>
-            <tr><th>Material</th><th>Quantity</th></tr>
-            <tr><td>Slurry</td><td>112.6 MT</td></tr>
-            <tr><td>RH</td><td>59 MT</td></tr>
-            <tr><td>OPC</td><td>24.8 MT</td></tr>
-            <tr><td>Silo Stock</td><td>0 MT</td></tr>
-            <tr><td>Microsilica Bags</td><td>1819 Nos</td></tr>
-        </table>
-    </div>
+        // Chart data
+        const shiftLabels = ['Day Shift', 'Night Shift'];
+        const colors = ['#3498db', '#2c3e50'];
+        
+        // Production Quantity Chart
+        new Chart(document.getElementById('productionChart'), {
+            type: 'bar',
+            data: {
+                labels: shiftLabels,
+                datasets: [{
+                    label: 'Dryer Production (MT)',
+                    data: [26, 26],
+                    backgroundColor: colors[0],
+                    borderColor: colors[0],
+                    borderWidth: 1
+                }, {
+                    label: 'VRM Production (MT)',
+                    data: [17.1, 30.2],
+                    backgroundColor: colors[1],
+                    borderColor: colors[1],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Metric Tons (MT)'
+                        }
+                    }
+                }
+            }
+        });
 
-    <div class="section">
-        <h3>Power Failure & Break Down</h3>
-        <ul>
-            <li>10:00 AM - RH Vehicle Unloading Started</li>
-            <li>2:30 PM to 4:00 PM - Power Cut for New Meter Installation</li>
-        </ul>
-    </div>
+        // Working Hours Chart
+        new Chart(document.getElementById('workingHoursChart'), {
+            type: 'bar',
+            data: {
+                labels: shiftLabels,
+                datasets: [{
+                    label: 'Total Shift Hours',
+                    data: [9, 9],
+                    backgroundColor: '#95a5a6',
+                    borderColor: '#95a5a6',
+                    borderWidth: 1
+                }, {
+                    label: 'Active Production Hours',
+                    data: [5, 5], // Dryer + VRM hours
+                    backgroundColor: '#e74c3c',
+                    borderColor: '#e74c3c',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Hours'
+                        }
+                    }
+                }
+            }
+        });
 
-    <div class="section">
-        <h3>Night Shift Production Plan</h3>
-        <ul>
-            <li>63 MT VRM Microsilica (AMS) Production</li>
-            <li>55 MT Dryer Microsilica (AMS) Drying Process</li>
-            <li><strong>Shift Incharge:</strong> Satya Ranjan</li>
-            <li><strong>Operators:</strong> Jagansoi & Shesananda</li>
-        </ul>
-    </div>
+        // Dryer Running Time Chart
+        new Chart(document.getElementById('dryerChart'), {
+            type: 'bar',
+            data: {
+                labels: shiftLabels,
+                datasets: [{
+                    label: 'Dryer Running Time',
+                    data: [4, 3.1],
+                    backgroundColor: colors,
+                    borderColor: colors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Hours'
+                        }
+                    }
+                }
+            }
+        });
+
+        // VRM Running Time Chart
+        new Chart(document.getElementById('vrmChart'), {
+            type: 'bar',
+            data: {
+                labels: shiftLabels,
+                datasets: [{
+                    label: 'VRM Running Time',
+                    data: [1, 1.9],
+                    backgroundColor: colors,
+                    borderColor: colors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Hours'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Electricity Consumption Chart
+        new Chart(document.getElementById('electricityChart'), {
+            type: 'bar',
+            data: {
+                labels: shiftLabels,
+                datasets: [{
+                    label: 'Units Consumed',
+                    data: [768, 1264],
+                    backgroundColor: colors,
+                    borderColor: colors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Units'
+                        }
+                    }
+                }
+            }
+        });
+
+        // JCB Running Time Chart
+        new Chart(document.getElementById('jcbChart'), {
+            type: 'bar',
+            data: {
+                labels: shiftLabels,
+                datasets: [{
+                    label: 'JCB Running Time',
+                    data: [5, 4],
+                    backgroundColor: colors,
+                    borderColor: colors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Hours'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
