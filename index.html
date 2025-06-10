@@ -8,46 +8,50 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-            line-height: 1.6;
+            margin: 10px;
+            line-height: 1.5;
+            font-size: 14px;
         }
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
         .shift-report {
             border: 1px solid #ddd;
-            padding: 20px;
-            margin-bottom: 30px;
+            padding: 10px;
+            margin-bottom: 20px;
             border-radius: 5px;
             background-color: #f9f9f9;
         }
         .shift-title {
             background-color: #333;
             color: white;
-            padding: 10px;
-            margin: -20px -20px 20px -20px;
+            padding: 8px;
+            margin: -10px -10px 15px -10px;
             border-radius: 5px 5px 0 0;
+            font-size: 16px;
         }
         .section {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         .section-title {
             font-weight: bold;
             border-bottom: 1px solid #ddd;
-            padding-bottom: 5px;
-            margin-bottom: 10px;
+            padding-bottom: 3px;
+            margin-bottom: 8px;
+            font-size: 15px;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+            font-size: 13px;
         }
         table, th, td {
             border: 1px solid #ddd;
         }
         th, td {
-            padding: 8px;
+            padding: 6px;
             text-align: left;
         }
         th {
@@ -56,32 +60,57 @@
         .notes {
             font-style: italic;
             color: #666;
+            font-size: 13px;
         }
         .chart-container {
             display: flex;
+            flex-direction: column;
+            margin: 20px 0;
+        }
+        .chart-row {
+            display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
-            margin: 30px 0;
+            margin-bottom: 15px;
         }
         .chart-box {
-            width: 48%;
-            min-width: 300px;
-            margin-bottom: 30px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            padding: 15px;
+            width: 100%;
+            margin-bottom: 15px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            padding: 10px;
             border-radius: 5px;
             background: white;
+        }
+        @media (min-width: 600px) {
+            .chart-box {
+                width: 48%;
+            }
         }
         .chart-title {
             text-align: center;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            font-size: 14px;
         }
         .comparison-section {
             background-color: #eef7ff;
-            padding: 20px;
+            padding: 15px;
             border-radius: 5px;
-            margin: 30px 0;
+            margin: 20px 0;
+        }
+        canvas {
+            max-height: 250px;
+        }
+        h1 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        h2 {
+            font-size: 18px;
+        }
+        h3 {
+            font-size: 16px;
+            margin: 10px 0 5px 0;
         }
     </style>
 </head>
@@ -96,29 +125,40 @@
         <h2>Shift Comparison Analysis</h2>
         
         <div class="chart-container">
-            <div class="chart-box">
-                <div class="chart-title">Production Quantity (MT)</div>
-                <canvas id="productionChart"></canvas>
+            <div class="chart-row">
+                <div class="chart-box">
+                    <div class="chart-title">Production Quantity (MT) - Bar</div>
+                    <canvas id="productionChart"></canvas>
+                </div>
+                <div class="chart-box">
+                    <div class="chart-title">Production Distribution - Pie</div>
+                    <canvas id="productionPieChart"></canvas>
+                </div>
             </div>
-            <div class="chart-box">
-                <div class="chart-title">Active Working Hours</div>
-                <canvas id="workingHoursChart"></canvas>
+            
+            <div class="chart-row">
+                <div class="chart-box">
+                    <div class="chart-title">Active Working Hours</div>
+                    <canvas id="workingHoursChart"></canvas>
+                </div>
             </div>
-            <div class="chart-box">
-                <div class="chart-title">Dryer Running Time (hours)</div>
-                <canvas id="dryerChart"></canvas>
+            
+            <div class="chart-row">
+                <div class="chart-box">
+                    <div class="chart-title">Equipment Running Time</div>
+                    <canvas id="equipmentChart"></canvas>
+                </div>
             </div>
-            <div class="chart-box">
-                <div class="chart-title">VRM Running Time (hours)</div>
-                <canvas id="vrmChart"></canvas>
-            </div>
-            <div class="chart-box">
-                <div class="chart-title">Electricity Consumption (Units)</div>
-                <canvas id="electricityChart"></canvas>
-            </div>
-            <div class="chart-box">
-                <div class="chart-title">JCB Running Time (hours)</div>
-                <canvas id="jcbChart"></canvas>
+            
+            <div class="chart-row">
+                <div class="chart-box">
+                    <div class="chart-title">Electricity Consumption</div>
+                    <canvas id="electricityChart"></canvas>
+                </div>
+                <div class="chart-box">
+                    <div class="chart-title">Electricity Distribution - Pie</div>
+                    <canvas id="electricityPieChart"></canvas>
+                </div>
             </div>
         </div>
     </div>
@@ -129,7 +169,6 @@
             <h2>Night Shift Production Report (9:00 PM - 6:00 AM)</h2>
         </div>
         
-        <!-- Rest of the night shift content remains the same -->
         <div class="section">
             <div class="section-title">Opening Stock of Raw Material</div>
             <table>
@@ -208,7 +247,6 @@
             <h2>Day Shift Production Report (9:00 AM - 6:00 PM)</h2>
         </div>
         
-        <!-- Rest of the day shift content remains the same -->
         <div class="section">
             <div class="section-title">Opening Stock of Raw Material</div>
             <table>
@@ -308,6 +346,7 @@
         // Chart data
         const shiftLabels = ['Day Shift', 'Night Shift'];
         const colors = ['#3498db', '#2c3e50'];
+        const pieColors = ['#3498db', '#2c3e50', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6'];
         
         // Production Quantity Chart
         new Chart(document.getElementById('productionChart'), {
@@ -330,6 +369,7 @@
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 scales: {
                     y: {
                         beginAtZero: true,
@@ -337,6 +377,28 @@
                             display: true,
                             text: 'Metric Tons (MT)'
                         }
+                    }
+                }
+            }
+        });
+
+        // Production Pie Chart
+        new Chart(document.getElementById('productionPieChart'), {
+            type: 'pie',
+            data: {
+                labels: ['Day Dryer', 'Day VRM', 'Night Dryer', 'Night VRM'],
+                datasets: [{
+                    data: [26, 17.1, 26, 30.2],
+                    backgroundColor: pieColors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
                     }
                 }
             }
@@ -363,6 +425,7 @@
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 scales: {
                     y: {
                         beginAtZero: true,
@@ -375,21 +438,56 @@
             }
         });
 
-        // Dryer Running Time Chart
-        new Chart(document.getElementById('dryerChart'), {
+        // Hours Pie Chart
+        new Chart(document.getElementById('hoursPieChart'), {
+            type: 'pie',
+            data: {
+                labels: ['Day Active', 'Day Idle', 'Night Active', 'Night Idle'],
+                datasets: [{
+                    data: [5, 4, 5, 4],
+                    backgroundColor: pieColors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Equipment Running Time Chart
+        new Chart(document.getElementById('equipmentChart'), {
             type: 'bar',
             data: {
                 labels: shiftLabels,
                 datasets: [{
-                    label: 'Dryer Running Time',
+                    label: 'Dryer Running',
                     data: [4, 3.1],
-                    backgroundColor: colors,
-                    borderColor: colors,
+                    backgroundColor: '#3498db',
+                    borderColor: '#3498db',
+                    borderWidth: 1
+                }, {
+                    label: 'VRM Running',
+                    data: [1, 1.9],
+                    backgroundColor: '#2c3e50',
+                    borderColor: '#2c3e50',
+                    borderWidth: 1
+                }, {
+                    label: 'JCB Running',
+                    data: [5, 4],
+                    backgroundColor: '#e74c3c',
+                    borderColor: '#e74c3c',
                     borderWidth: 1
                 }]
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 scales: {
                     y: {
                         beginAtZero: true,
@@ -402,28 +500,23 @@
             }
         });
 
-        // VRM Running Time Chart
-        new Chart(document.getElementById('vrmChart'), {
-            type: 'bar',
+        // Equipment Pie Chart
+        new Chart(document.getElementById('equipmentPieChart'), {
+            type: 'pie',
             data: {
-                labels: shiftLabels,
+                labels: ['Day Dryer', 'Day VRM', 'Day JCB', 'Night Dryer', 'Night VRM', 'Night JCB'],
                 datasets: [{
-                    label: 'VRM Running Time',
-                    data: [1, 1.9],
-                    backgroundColor: colors,
-                    borderColor: colors,
+                    data: [4, 1, 5, 3.1, 1.9, 4],
+                    backgroundColor: pieColors,
                     borderWidth: 1
                 }]
             },
             options: {
                 responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Hours'
-                        }
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
                     }
                 }
             }
@@ -444,6 +537,7 @@
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 scales: {
                     y: {
                         beginAtZero: true,
@@ -456,28 +550,23 @@
             }
         });
 
-        // JCB Running Time Chart
-        new Chart(document.getElementById('jcbChart'), {
-            type: 'bar',
+        // Electricity Pie Chart
+        new Chart(document.getElementById('electricityPieChart'), {
+            type: 'pie',
             data: {
-                labels: shiftLabels,
+                labels: ['Day Shift', 'Night Shift'],
                 datasets: [{
-                    label: 'JCB Running Time',
-                    data: [5, 4],
-                    backgroundColor: colors,
-                    borderColor: colors,
+                    data: [768, 1264],
+                    backgroundColor: [colors[0], colors[1]],
                     borderWidth: 1
                 }]
             },
             options: {
                 responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Hours'
-                        }
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
                     }
                 }
             }
